@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <Cell v-for="(cell, index) in state.grid" :state="cell" :key="index"/>
+    <Cell v-for="(cell, index) in state.grid" :alive="cell" :key="index"/>
   </div>
 </template>
 
@@ -13,21 +13,61 @@ export default {
         height: 20,
         width: 30,
         grid: []
-      }
+      },
+      loop: null,
+      interval: 100
+    }
+  },
+  computed: {
+    moves () {
+      return [
+        this.state.width + 1,
+        this.state.width,
+        this.state.width - 1,
+        1,
+        -1,
+        -this.state.width + 1,
+        -this.state.width,
+        -this.state.width - 1
+      ]
     }
   },
   components: {Cell},
   created () {
     this.initGrid()
-    console.log(this.state.grid)
+    this.enterLoop()
   },
   methods: {
     initGrid () {
       this.state.grid = Array.from({length: this.state.height * this.state.width}, () => {
-        return {
-          alive: Math.random() < 0.1
-        }
+        return Math.random() < 0.2
       })
+    },
+    numberOfNeighbours (index) {
+      return this.moves
+        .map(move => {
+          if (index - move < 0 || index - move > this.state.height * this.state.width) { // this is bad but stays for now
+            return 0
+          }
+          return this.state.grid[index - move] ? 1 : 0
+        })
+        .reduce((acc, curr) => {
+          return acc + curr
+        })
+    },
+    enterLoop () {
+      this.loop = setInterval(() => {
+        this.state.grid = this.state.grid.map((cell, index) => {
+          const neighbours = this.numberOfNeighbours(index)
+          if (neighbours < 2 || neighbours > 3) {
+            return false
+          }
+          if (neighbours === 3) {
+            return true
+          }
+          return cell
+        })
+      }, this.interval)
     }
   }
 }

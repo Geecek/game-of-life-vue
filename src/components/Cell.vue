@@ -1,11 +1,11 @@
 <template>
-  <div class="cell" :class="{alive: state.alive}">
+  <div class="cell" :class="{alive: alive}">
   </div>
 </template>
 
 <script>
 export default {
-  props: ['state']
+  props: ['alive']
 }
 </script>
 
