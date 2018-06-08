@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <Cell v-for="(cell, index) in state.grid" :alive="cell" :key="index"/>
+    <Cell @changeState="changeState" v-for="(cell, index) in state.grid" :alive="cell" :key="index" :index="index"/>
   </div>
 </template>
 
@@ -10,12 +10,12 @@ export default {
   data () {
     return {
       state: {
-        height: 20,
-        width: 30,
+        height: 50,
+        width: 80,
         grid: []
       },
       loop: null,
-      interval: 100
+      interval: 50
     }
   },
   computed: {
@@ -68,6 +68,9 @@ export default {
           return cell
         })
       }, this.interval)
+    },
+    changeState (index) {
+      this.state.grid[index] = !this.state.grid[index]
     }
   }
 }
@@ -77,6 +80,6 @@ export default {
   .board {
     width: 450px;
     display: grid;
-    grid-template-columns: repeat(30, 1fr);
+    grid-template-columns: repeat(80, 1fr);
   }
 </style>
