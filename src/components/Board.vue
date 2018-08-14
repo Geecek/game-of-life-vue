@@ -10,12 +10,12 @@ export default {
   data () {
     return {
       state: {
-        height: 50,
-        width: 80,
+        height: 20,
+        width: 30,
         grid: []
       },
       loop: null,
-      interval: 50
+      interval: 200
     }
   },
   computed: {
@@ -80,6 +80,6 @@ export default {
   .board {
     width: 450px;
     display: grid;
-    grid-template-columns: repeat(80, 1fr);
+    grid-template-columns: repeat(30, 1fr);
   }
 </style>
